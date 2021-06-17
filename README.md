@@ -27,7 +27,10 @@ decompose tasks from technical point of view.
 3. Create a PR that passes your build pipeline (linter, tests, code review)
 4. When it is merged to master branch, create a task for all to-do items
 
-## Marker format
+You go from very large abstract tasks that will produce lots of puzzles to
+very small and concrete ones that won't have any puzzles inside.
+
+## Puzzle format
 
 1. It should have an indicator of a puzzle, e. g. `TODO` or whatever you want
 2. It should reference a parent task (what task you were doing when you added
