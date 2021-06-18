@@ -39,19 +39,53 @@ very small and concrete ones that won't have any puzzles inside.
 
 ## The tree of tasks
 
-@TODO/1: talk about management and money here
+        #1 Implement the online shop
+        /                      \
+  #2 Develop a web server      #3 Develop GUI
+  /        \                      /       \
+  ...                                ...
+  /
+ ✅ #345 Post a review
+  /
+✅ #348 Persist review in db
+
+Having a few trees a manager knows how much time some feature takes.
 
 ## An example
 
-I'm given a task to @TODO/1: come up with an example idea.
+I'm given a task:
+`#392: Email users XSLX reports with their activities.`
 
 ```ruby
-@TODO/1: Give an example how to PDD
+# TODO/392:
+# Perform sending emails in the other background process
+class ReportsController < ApplicationController
+  def trigger
+    User.all.find_each do |user|
+      ReportMailer.with(user).deliver_now
+    end
+  end
+end
+
+class ReportMailer < ApplicationMailer
+  def user_activities(user)
+    attachment['my_activities.xlsx'] = UserActivitiesReport.new(user).to_xslx
+    mail(to: user.email, subject: 'Activities')
+  end
+end
+
+# TODO/392:
+# generate user activities report and write it to the excel document.
+class UserActivitiesReport
+  def initialize(_user); end
+
+  def to_xslx
+    RubyXL::Workbook.new.stream
+  end
+end
 ```
 
 ## Concerns
-
-@TODO/1: find out what are other concerns
 
 ### I am not a manager/don't want to create tasks/want to code only/Automation
 
@@ -82,8 +116,10 @@ class SettingsController < ApplicationController
 end
 
 RSpec.describe SettingsController do
-  # TODO/106084363: enable this test by implementing SettingsController#update
-  # action.
+  # TODO/106084363:
+  # Enable this test by implementing SettingsController#update action.
+  # Estimate: 30 minutes
+  # Role: Dev
   xcontext 'when user signed in' do
     before { sign_in user }
 
@@ -103,3 +139,21 @@ RSpec.describe SettingsController do
   end
 end
 ```
+
+### Pros
+
++ It is supposed to be more predictable
++ Less "stupid" tasks
++ You deliver results faster
++ Better competence distribution
++ You can measure performance
++ More attention in code review
++ It is very agile
++ It is fun and interesting
+
+### Cons
+
+- More bureaucracy
+- More feature flagging to avoid unimplemented features in production
+- Easy to overuse it
+- **You tell me**
